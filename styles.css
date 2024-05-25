@@ -1,58 +1,52 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const loginModal = document.getElementById('login-modal');
-    const loginForm = document.getElementById('login-form');
-    const closeModal = document.getElementsByClassName('close')[0];
-
-    // Show login modal
-    loginModal.style.display = 'block';
-
-    // Close the modal when the user clicks the close button
-    closeModal.onclick = function() {
-        loginModal.style.display = 'none';
-    }
-
-    // Close the modal when the user clicks outside of the modal
-    window.onclick = function(event) {
-        if (event.target == loginModal) {
-            loginModal.style.display = 'none';
-        }
-    }
-
-    // Login form submit event
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        // For demonstration purposes, we will use a hardcoded username and password
-        const validUsername = 'admin';
-        const validPassword = 'password123';
-
-        if (username === validUsername && password === validPassword) {
-            alert('Login successful');
-            loginModal.style.display = 'none';
-            // Load the news articles (this would be fetched from a backend in a real application)
-            loadNewsArticles();
-        } else {
-            alert('Invalid username or password');
-        }
-    });
-
-    // Function to load news articles
-    function loadNewsArticles() {
-        const newsArticles = document.getElementById('news-articles');
-        // Sample news articles (in a real application, fetch this data from a backend)
-        const articles = [
-            { title: 'School Sports Day', content: 'The school sports day was a huge success with many students participating.' },
-            { title: 'Science Fair', content: 'The annual science fair showcased some incredible projects from our students.' }
-        ];
-
-        articles.forEach(article => {
-            const articleElement = document.createElement('div');
-            articleElement.className = 'article';
-            articleElement.innerHTML = `<h3>${article.title}</h3><p>${article.content}</p>`;
-            newsArticles.appendChild(articleElement);
-        });
-    }
-});
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
+header h1 {
+    margin: 0;
+    display: inline;
+}
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+main {
+    padding: 20px;
+}
+form {
+    margin: 20px 0;
+}
+label {
+    display: block;
+    margin: 5px 0;
+}
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px 0;
+}
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #555;
+}
+.post {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+}
+.post h3 {
+    margin: 0;
+}
