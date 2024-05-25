@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SchoolDropper</title>
+    <title>Register - SchoolDropper</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>SchoolDropper</h1>
+        <h1>Register</h1>
         <nav>
             <a href="index.html">Home</a>
-            <a href="register.html" id="registerLink">Register</a>
+            <a href="register.html">Register</a>
             <a href="login.html" id="loginLink">Login</a>
             <a href="admin.html" id="adminLink" style="display: none;">Admin</a>
         </nav>
     </header>
     <main>
-        <h2>Welcome to SchoolDropper</h2>
-        <div id="posts"></div>
+        <h2>Create an Account</h2>
+        <form id="registerForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Register</button>
+        </form>
     </main>
     <script src="app.js"></script>
 </body>
