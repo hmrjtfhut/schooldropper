@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, send_from_directory, session
+import os
+from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_session import Session
 
-app = Flask(__name__, static_folder='.')
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Secret key for session management
 app.secret_key = 'supersecretkey'
@@ -10,20 +11,19 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 # In-memory databases
-users = {}
+users = {
+    'admin': {
+        'username': 'admin',
+        'password': generate_password_hash('admin'),
+        'role': 'admin'
+    }
+}
 posts = []
 active_users = set()
 
-# Create default admin account
-users['admin'] = {
-    'username': 'admin',
-    'password': generate_password_hash('admin'),
-    'role': 'admin'
-}
-
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('templates', 'index.html')
 
 @app.route('/<path:path>')
 def serve_file(path):
@@ -68,6 +68,7 @@ def posts_handler():
 
         post = request.json
         post['likes'] = 0  # Initialize likes
+        post['liked_users'] = set()
         posts.append(post)
         return jsonify({'success': True}), 201
 
@@ -83,22 +84,19 @@ def like_post(post_id):
 
     username = session['username']
     post = posts[post_id]
-    if 'likes_users' not in post:
-        post['likes_users'] = set()
-    
-    if username in post['likes_users']:
-        return jsonify({'success': False, 'message': 'Already liked'}), 400
 
-    post['likes_users'].add(username)
-    post['likes'] += 1
+    if username in post['liked_users']:
+        post['liked_users'].remove(username)
+        post['likes'] -= 1
+    else:
+        post['liked_users'].add(username)
+        post['likes'] += 1
+
     return jsonify({'success': True, 'likes': post['likes']}), 200
 
 @app.route('/api/active_users', methods=['GET'])
 def get_active_users():
-    if 'username' not in session or session['role'] != 'admin':
-        return jsonify({'success': False, 'message': 'Unauthorized'}), 403
-    
     return jsonify({'success': True, 'active_users': list(active_users)}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=os.environ.get('PORT', 5000))
