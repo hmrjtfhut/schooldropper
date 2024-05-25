@@ -40,6 +40,9 @@ def register():
         'password': generate_password_hash(data['password']),
         'role': 'user'  # Default role is 'user'
     }
+    session['username'] = data['username']
+    session['role'] = 'user'
+    active_users.add(data['username'])
     return jsonify({'success': True}), 201
 
 @app.route('/api/login', methods=['POST'])

@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.ok) {
-                window.location.href = 'login.html';
+                const result = await response.json();
+                sessionStorage.setItem('role', result.role);
+                window.location.href = 'index.html';
             } else {
                 alert('Registration failed');
             }
