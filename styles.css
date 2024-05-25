@@ -1,65 +1,58 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const loginModal = document.getElementById('login-modal');
+    const loginForm = document.getElementById('login-form');
+    const closeModal = document.getElementsByClassName('close')[0];
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-    text-align: center;
-}
+    // Show login modal
+    loginModal.style.display = 'block';
 
-#main-content {
-    padding: 2rem;
-}
+    // Close the modal when the user clicks the close button
+    closeModal.onclick = function() {
+        loginModal.style.display = 'none';
+    }
 
-#news-section {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    // Close the modal when the user clicks outside of the modal
+    window.onclick = function(event) {
+        if (event.target == loginModal) {
+            loginModal.style.display = 'none';
+        }
+    }
 
-#news-articles {
-    margin-top: 1rem;
-}
+    // Login form submit event
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-}
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 5px;
-}
+        // For demonstration purposes, we will use a hardcoded username and password
+        const validUsername = 'admin';
+        const validPassword = 'password123';
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
+        if (username === validUsername && password === validPassword) {
+            alert('Login successful');
+            loginModal.style.display = 'none';
+            // Load the news articles (this would be fetched from a backend in a real application)
+            loadNewsArticles();
+        } else {
+            alert('Invalid username or password');
+        }
+    });
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
+    // Function to load news articles
+    function loadNewsArticles() {
+        const newsArticles = document.getElementById('news-articles');
+        // Sample news articles (in a real application, fetch this data from a backend)
+        const articles = [
+            { title: 'School Sports Day', content: 'The school sports day was a huge success with many students participating.' },
+            { title: 'Science Fair', content: 'The annual science fair showcased some incredible projects from our students.' }
+        ];
+
+        articles.forEach(article => {
+            const articleElement = document.createElement('div');
+            articleElement.className = 'article';
+            articleElement.innerHTML = `<h3>${article.title}</h3><p>${article.content}</p>`;
+            newsArticles.appendChild(articleElement);
+        });
+    }
+});
